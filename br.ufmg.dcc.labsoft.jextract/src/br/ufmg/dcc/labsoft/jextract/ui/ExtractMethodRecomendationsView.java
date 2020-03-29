@@ -32,6 +32,7 @@ import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TableColumn;
@@ -278,9 +279,18 @@ public class ExtractMethodRecomendationsView extends ViewPart {
 		
 		actionExport = new Action() {
 			public void run() {
-				String outputPath = "E:/Danilo/Temp/out.txt";
-				new EmrFileExporter(recomendations, outputPath).export();
-				showMessage(String.format("Data saved at %s", outputPath));
+				// This option put a static output path to save the file
+				//String outputPath = "E:/Danilo/Temp/out.txt";
+				//new EmrFileExporter(recomendations, outputPath).export();
+				//showMessage(String.format("Data saved at %s", outputPath));
+				
+				// This option allows the user to select where will save the file
+				FileDialog fd = new FileDialog(getSite().getWorkbenchWindow().getShell());
+				fd.setText("Save Results");
+		        String[] filterExt = { "*.txt" };
+		        fd.setFilterExtensions(filterExt);
+				String selected = fd.open() + ".txt";
+				new EmrFileExporter(recomendations, selected).export();
 			}
 		};
 		actionExport.setText("Save to file");
